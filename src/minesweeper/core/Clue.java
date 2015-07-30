@@ -1,16 +1,13 @@
 package minesweeper.core;
 
-import javafx.scene.control.TitledPane;
-
 /**
  * Clue tile.
  */
 public class Clue  extends Tile {
     /** Value of the clue. */
     private final int value;
-      
-
-	/**
+    
+    /**
      * Constructor.
      * @param value  value of the clue
      */
@@ -18,22 +15,20 @@ public class Clue  extends Tile {
         this.value = value;
     }
 
-	public int getValue() {
+	private int getValue() {
 		return value;
 	}
-    
-    @Override
+
+	@Override
 	public String toString() {
-		String MineStr = "";
-		if(getState() == Tile.State.OPEN)
-		{
-			MineStr =  getValue() + "";
-			return MineStr;
+		if(getState() == Tile.State.OPEN){
+			return getValue() + "";
 		}
 		else{
 			return super.toString();
 		}
-		
 	}
-    
+	
+	
+	
 }

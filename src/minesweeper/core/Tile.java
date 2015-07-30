@@ -36,14 +36,14 @@ public abstract class Tile {
 
 	@Override
 	public String toString() {
-		String MineStr = "";
-		if (getState() == State.CLOSED){
-			MineStr = "-";
+		String mineStr = "";
+		if(getState() == state.CLOSED){
+			mineStr = "-";
 		}
-	else if (getState() == State.MARKED){
-		MineStr = "M";
+		else if(getState() == state.MARKED){
+			mineStr = "M";	
+		}
+		return mineStr;
 	}
-		return MineStr;
-}
     
 }

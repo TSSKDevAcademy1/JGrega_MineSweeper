@@ -1,10 +1,12 @@
 package minesweeper.core;
-
 import java.util.*;
+
 /**
  * Field represents playing field and game logic.
  */
 public class Field {
+	String alphabet = " ABCDEFGHIJKLMNOPRSTQXYZ";
+	String numbers = "0123456789";
     /**
      * Playing field tiles.
      */
@@ -45,8 +47,6 @@ public class Field {
 
         //generate the field content
         generate();
-        
-      //  System.out.ToString();
     }
 
     /**
@@ -56,7 +56,7 @@ public class Field {
      * @param column column number
      */
     public void openTile(int row, int column) {
-        Tile tile = tiles[row][column]; //getTiles()
+        Tile tile = tiles[row][column];
         if (tile.getState() == Tile.State.CLOSED) {
             tile.setState(Tile.State.OPEN);
             if (tile instanceof Mine) {
@@ -78,51 +78,51 @@ public class Field {
      * @param column column number
      */
     public void markTile(int row, int column) {
-    	// Metoda sluzi na oznacenie/odznacenie dlazdice specifikovanej riadkom a stlpcom
     	Tile tile = tiles[row][column];
-    	
-    	if(tile.getState() == Tile.State.CLOSED){ // Ak je dlazdica CLOSED potom zmen na MARKED
-    			tile.setState(Tile.State.MARKED);
+    	for(int r = 0; r < rowCount; r++){
+    		for(int c = 0; c < columnCount; c++){
+    			if(tile.getState() == Tile.State.CLOSED){
+    				tile.setState(Tile.State.MARKED);
+    			}
+    			else if(tile.getState() == Tile.State.MARKED){
+    				tile.setState(Tile.State.CLOSED);
+    			}
     		}
-    	else if(tile.getState() == Tile.State.MARKED){ // Ak je dlazdica MARKED zmen na CLOSED
-    			tile.setState(Tile.State.CLOSED);
-    		}
+    	}
     }
 
     /**
      * Generates playing field.
      */
-    // Funkcia aby v hernom poli "tiles" nahodne rozlozila miny,,, pocet min-mineCount
+    // Nahodne vygeneruje riadok/stlpec a ak tam nieje Mina tak ju tam ulozi
     private void generate() {
-    	//int countMine = 0;
-    	//Tile numMine = new Tile();
-    	
-    	Random gen = new Random();
+    	//int mineCount = 0;
+    	Random randomize = new Random();
+    	    		
     	for(int i = 0; i < mineCount; i++){
-    		int c = gen.nextInt(columnCount); 
-    		int r = gen.nextInt(rowCount);
-    		
-    		if(tiles[r][c] == null){ // ak je na danej pozicii NULL prida Minu
-    			tiles[r][c] = new Mine();
-    		}
-    		else{ // Ak nie dekrementuje premennu "i" a sprava sa ako keby dana iteracia nebola vykonana
-    			i--;
-    		}    			
+	    	int r = randomize.nextInt(rowCount);
+	    	int c = randomize.nextInt(columnCount);
+	    	
+	    	if(tiles[r][c] == null){
+	    		tiles[r][c] = new Mine();
+	    	}
+	    	else{
+	    		i--;
+	    	}
     	}
-    	for(int r = 0; r < rowCount; r++){ // Ak tam nieje mina prida pocet Min v okoli
+    	for(int r = 0; r < rowCount; r++){
     		for(int c = 0; c < columnCount; c++){
     			if(tiles[r][c] == null){
-    				//Tile numMine = Tile(countAdjacentMines(r,c));
     				tiles[r][c] = new Clue(countAdjacentMines(r,c));
     			}
     		}
     	}
-    }
+    	
+    	
+    	
+    	
     
-    private Tile Tile(int countAdjacentMines) {
-		// TODO Auto-generated method stub
-		return null;
-	}	
+    }
 
     /**
      * Returns true if game is solved, false otherwise.
@@ -148,7 +148,7 @@ public class Field {
                 for (int columnOffset = -1; columnOffset <= 1; columnOffset++) {
                     int actColumn = column + columnOffset;
                     if (actColumn >= 0 && actColumn < getColumnCount()) {
-                        if (tiles[actRow][actColumn] instanceof Mine) { // instanceof - zisti ci je mina-true a false ak nieje
+                        if (tiles[actRow][actColumn] instanceof Mine) {
                             count++;
                         }
                     }
@@ -184,15 +184,27 @@ public class Field {
 	}
 
 	@Override
-	public String toString() {
-		String MineStr = "";
-		for(int i = 0; i < rowCount; i++){
-			for(int j = 0; j < columnCount; j++){
-				MineStr += tiles[i][j];
+	public String toString() { // algoritmus vykreslenia
+		String sweeper = "";
+		int rows = rowCount + 1;
+		int columns = columnCount + 1;
+		for(int r = 0; r < rows; r++){				
+			for(int c = 0; c < columns; c++){
+				if(r == 0){ 
+					if(c == 0)
+						sweeper += "  " + Character.toString(numbers.charAt(c));
+					else if (c < columns - 1)
+					sweeper += " " + Character.toString(numbers.charAt(c ));
+				}else{
+					if(c == 0)
+						sweeper += Character.toString(alphabet.charAt(r));
+					else
+						sweeper += " " + tiles[r-1][c-1] ;
+				}
 			}
-			MineStr += "\n";
+			sweeper += "\n";
 		}
-		return MineStr;
-	}
+		return sweeper;
+	}	
 	
 }

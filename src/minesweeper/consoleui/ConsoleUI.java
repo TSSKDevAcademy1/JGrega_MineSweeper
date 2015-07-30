@@ -3,12 +3,14 @@ package minesweeper.consoleui;
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
+
+import minesweeper.UserInterface;
 import minesweeper.core.Field;
 
 /**
  * Console user interface.
  */
-public class ConsoleUI {
+public class ConsoleUI implements UserInterface {
     /** Playing field. */
     private Field field;
     
@@ -27,24 +29,27 @@ public class ConsoleUI {
         }
     }
     
-    /**
-     * Starts the game.
-     * @param field field of mines and clues
-     */
-    public void newGameStarted(Field field) {
+    /* (non-Javadoc)
+	 * @see minesweeper.consoleui.UserInterface#newGameStarted(minesweeper.core.Field)
+	 */
+    @Override
+	public void newGameStarted(Field field) {
         this.field = field;
         do {
             update();
-            processInput();
-            throw new UnsupportedOperationException("Resolve the game state - winning or loosing condition.");
+            break;
+         //   processInput(); // odstranene aby sa necyklylo
+       //     throw new UnsupportedOperationException("Resolve the game state - winning or loosing condition.");
         } while(true);
     }
     
-    /**
-     * Updates user interface - prints the field.
-     */
-    public void update() {
-        throw new UnsupportedOperationException("Method update not yet implemented");
+    /* (non-Javadoc)
+	 * @see minesweeper.consoleui.UserInterface#update()
+	 */
+    @Override
+	public void update() {
+   //     throw new UnsupportedOperationException("Method update not yet implemented");
+    	System.out.printf(field.toString()); ///////
     }
     
     /**
@@ -52,6 +57,6 @@ public class ConsoleUI {
      * Reads line from console and does the action on a playing field according to input string.
      */
     private void processInput() {
-        throw new UnsupportedOperationException("Method processInput not yet implemented");
+    //    throw new UnsupportedOperationException("Method processInput not yet implemented");
     }
 }
